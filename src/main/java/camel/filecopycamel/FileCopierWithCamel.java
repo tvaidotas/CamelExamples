@@ -14,9 +14,9 @@ public class FileCopierWithCamel {
         CamelContext context = new DefaultCamelContext();
         context.addRoutes(new RouteBuilder() {
             public void configure() {
-                from("file:inbox?noop=true").to("file:outbox");
+                from("file:inbox?noop=false").to("file:outbox");
             }
-        });
+        }); // setting noop to false would make camel move the file from inbox to outbox
         context.start();
         Thread.sleep(10000); // need sleep to keep JVM running until the job is done
         context.stop();

@@ -26,6 +26,7 @@ public class FileCopier {
             if (source.isFile()) {
                 File dest = new File(outbox.getPath() + File.separator + source.getName());
                 copyFile(source, dest);
+                source.delete(); // we would delete the file in inbox after it's moved to outbox
             }
         }
     }
