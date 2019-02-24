@@ -1,4 +1,4 @@
-package camel.ftptojmswithpredicate;
+package camel.ftptojmswithotherwise;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.camel.CamelContext;
@@ -8,7 +8,7 @@ import org.apache.camel.impl.DefaultCamelContext;
 
 import javax.jms.ConnectionFactory;
 
-public class FtpToJMSWithPredicate {
+public class FtpToJMSWithOtherwise {
 
     public static void main(String args[]) throws Exception {
         CamelContext context = new DefaultCamelContext();
@@ -25,13 +25,14 @@ public class FtpToJMSWithPredicate {
             public void configure() {
                 // connect to FTP server
                 // copy all the files in root directory and put them as messages onto the queue
-                from("jms:xmlOrders")
-                        .multicast()
-                        .stopOnException()
-                        .to("direct:accounting")
-                        .end()
-                        .to("mock:end");
-
+                from("ftp://test.rebex.net?username=demo&password=password")
+                    .choice()
+                    .when(header("CamelFileName").endsWith(".xml"))
+                        .to("activemq:queue:xmlorders")
+                    .when(header("CamelFileName").endsWith(".csv"))
+                        .to("activemq:queue:csvorders")
+                    .otherwise()
+                        .to("activemq:queue:otherorders");
             }
         });
 
@@ -39,5 +40,4 @@ public class FtpToJMSWithPredicate {
         Thread.sleep(10000); // need sleep to keep JVM running until the job is done
         context.stop();
     }
-
 }
