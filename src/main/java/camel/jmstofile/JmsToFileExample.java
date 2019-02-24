@@ -1,4 +1,4 @@
-package camel.ftptojms;
+package camel.jmstofile;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.camel.CamelContext;
@@ -8,25 +8,24 @@ import org.apache.camel.impl.DefaultCamelContext;
 
 import javax.jms.ConnectionFactory;
 
-public class FtpToJMSExample {
+public class JmsToFileExample {
 
     public static void main(String args[]) throws Exception {
         CamelContext context = new DefaultCamelContext();
 
         // connect to embedded ActiveMQ JMS broker
         ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://localhost");
+        // make sure activemq is started ./activemq start
         // add the broker as a component
         context.addComponent("jms", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
 
-        // make sure activemq is started ./activemq start
         // add our route to the CamelContext
         context.addRoutes(new RouteBuilder() {
             @Override
             public void configure() {
-                // connect to FTP server
-                // copy all the files in root directory and put them as messages onto the queue
-                from("ftp://test.rebex.net?username=demo&password=password")
-                        .to("activemq:queue:incomingOrders"); // connected to activeMQ and put message into it
+                // connect to message queue and then copy he messages as files to data directory
+                from("activemq:queue:incomingOrders")
+                        .to("file:data"); // connected to activeMQ and put message into it
             }
         });
 
