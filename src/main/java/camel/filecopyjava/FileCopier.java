@@ -13,7 +13,7 @@ public class FileCopier {
     }
 
     private static void initiateCopying(String inbox, String outbox) throws Exception  {
-        File inboxDirectory = new File(inbox); // have this directory in the root of the project
+        File inboxDirectory = new File(inbox); // have this directory and a file in the root of the project
         File outboxDirectory = new File(outbox); // will be created if the directory doesn't exist
         outboxDirectory.mkdir(); // creates directory
         copyFiles(inboxDirectory, outboxDirectory); // initialises file copying
