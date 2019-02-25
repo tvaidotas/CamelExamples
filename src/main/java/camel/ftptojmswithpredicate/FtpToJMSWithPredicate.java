@@ -28,10 +28,9 @@ public class FtpToJMSWithPredicate {
                 from("jms:xmlOrders")
                         .multicast()
                         .stopOnException()
-                        .to("direct:accounting")
+                            .to("direct:accounting")
                         .end()
                         .to("mock:end");
-
             }
         });
 
