@@ -10,9 +10,9 @@ public class TextFileToCSV {
         CamelContext context = new DefaultCamelContext();
         context.addRoutes(new RouteBuilder() {
             public void configure() {
-                from("file:inbox?noop=true")
-                    .bean(new OrderToCsvBean())
-                    .to("file:outboxcsv?fileName=example.csv");
+            from("file:inbox?noop=true")
+                .bean(new OrderToCsvBean())
+                .to("file:outboxcsv?fileName=example.csv");
             }
         }
         );

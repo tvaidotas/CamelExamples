@@ -14,16 +14,16 @@ public class ConvertingWithCustomTransform {
         CamelContext context = new DefaultCamelContext();
         context.addRoutes(new RouteBuilder() {
             public void configure() {
-                from("file:inbox?noop=true")
-                    .transform(new Expression() {
-                        public <T> T evaluate(Exchange exchange, Class<T> type) {
-                            String body = exchange.getIn().getBody(String.class);
-                            body = body.replaceAll(" ", "<br/>");
-                            body = "<body>" + body + "</body>";
-                            return (T) body;
-                        }
-                    })
-                    .to("file:outbox");
+            from("file:inbox?noop=true")
+                .transform(new Expression() {
+                    public <T> T evaluate(Exchange exchange, Class<T> type) {
+                    String body = exchange.getIn().getBody(String.class);
+                    body = body.replaceAll(" ", "<br/>");
+                    body = "<body>" + body + "</body>";
+                    return (T) body;
+                    }
+                })
+                .to("file:outbox");
             }
         }
         );

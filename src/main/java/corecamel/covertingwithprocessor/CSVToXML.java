@@ -10,9 +10,9 @@ public class CSVToXML {
         CamelContext context = new DefaultCamelContext();
         context.addRoutes(new RouteBuilder() {
             public void configure() {
-                from("file:inboxcsv?noop=true")
-                    .process(new CSVToXMLProcessor())
-                    .to("file:outboxcsv?fileName=emp.xml");
+            from("file:inboxcsv?noop=true")
+                .process(new CSVToXMLProcessor())
+                .to("file:outboxcsv?fileName=emp.xml");
             }
         }
         );
